@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
+    <ServerGarbageCollection>True</ServerGarbageCollection>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+    <TargetLatestRuntimePatch>False</TargetLatestRuntimePatch>
+    <AssemblyName>Abacus.BackEnds.PlayerDatabase</AssemblyName>
+    <RootNamespace>Abacus.BackEnds.PlayerDatabase</RootNamespace>
+    <Authors>Matthew P. Del Buono</Authors>
+    <Company>Abacus Project</Company>
+    <Product>Abacus - Fleet Presence Background Tracking Service</Product>
+    <Description>Database service for storing arbitrary player-scoped data.</Description>
+    <Copyright>Copyright © 2020, The Abacus Project</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/mpdelbuono/abacus/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mpdelbuono/abacus.git</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Contracts\**" />
+    <EmbeddedResource Remove="Contracts\**" />
+    <None Remove="Contracts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ServiceFabric.Data" Version="4.0.470" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="4.0.470" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="4.0.470" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Contracts\Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

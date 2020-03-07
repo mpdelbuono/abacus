@@ -1,0 +1,8 @@
+## Network definition ##
+network:
+  schemaVersion: 1.0.0-preview2
+  name: FleetPresenceNetwork
+  properties:
+    description: FleetPresenceNetwork description.
+    networkAddressPrefix: 10.192.0.0/16
+    kind: Local
