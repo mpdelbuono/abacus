@@ -33,7 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FleetPresenceApi\FleetPresenceApi.csproj">
-      <ServiceLaunchUrl>https://{MachineName}:{ServicePort}/weatherforecast</ServiceLaunchUrl>
+      <ServiceLaunchUrl>https://{MachineName}:{ServicePort}/api/IsHealthy</ServiceLaunchUrl>
     </ProjectReference>
     <ProjectReference Include="..\FleetPresenceMonitor\FleetPresenceMonitor.csproj" />
     <ProjectReference Include="..\PlayerDatabase\PlayerDatabase.csproj" />
