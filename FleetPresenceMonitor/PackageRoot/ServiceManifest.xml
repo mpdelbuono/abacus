@@ -14,7 +14,7 @@
   <CodePackage Name="Code" Version="1.0.0">
     <EntryPoint>
       <ExeHost>
-        <Program>FleetPresenceMonitor.exe</Program>
+        <Program>Abacus.FrontEnds.FleetPresenceMonitor.exe</Program>
       </ExeHost>
     </EntryPoint>
   </CodePackage>

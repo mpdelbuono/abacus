@@ -5,15 +5,15 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "FleetPresenceTracker", "FleetPresenceTracker\FleetPresenceTracker.sfproj", "{52C11DC8-39F2-40FF-B0B3-632453E783B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerDatabase", "PlayerDatabase\PlayerDatabase.csproj", "{32B475E4-C511-4527-B20D-2CB7871D6A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayerDatabase", "PlayerDatabase\PlayerDatabase.csproj", "{32B475E4-C511-4527-B20D-2CB7871D6A4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FleetPresenceMonitor", "FleetPresenceMonitor\FleetPresenceMonitor.csproj", "{16A310E9-C120-49CB-89D2-846CE15FB29C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FleetPresenceMonitor", "FleetPresenceMonitor\FleetPresenceMonitor.csproj", "{16A310E9-C120-49CB-89D2-846CE15FB29C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FleetPresenceApi", "FleetPresenceApi\FleetPresenceApi.csproj", "{E0761DF0-51C0-4C6F-A9EF-650B430AEDEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FleetPresenceApi", "FleetPresenceApi\FleetPresenceApi.csproj", "{E0761DF0-51C0-4C6F-A9EF-650B430AEDEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceFabricUtilities", "ServiceFabricUtilities\ServiceFabricUtilities.csproj", "{310FA8B8-59A3-4560-9CDE-8AFE962E4FCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceFabricUtilities", "ServiceFabricUtilities\ServiceFabricUtilities.csproj", "{310FA8B8-59A3-4560-9CDE-8AFE962E4FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "PlayerDatabase\Contracts\Contracts.csproj", "{19F80CF3-6AA5-4439-B498-576342A674E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "PlayerDatabase\Contracts\Contracts.csproj", "{19F80CF3-6AA5-4439-B498-576342A674E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{52C11DC8-39F2-40FF-B0B3-632453E783B4}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{52C11DC8-39F2-40FF-B0B3-632453E783B4}.Debug|Any CPU.Build.0 = Debug|x64
+		{52C11DC8-39F2-40FF-B0B3-632453E783B4}.Debug|Any CPU.Deploy.0 = Debug|x64
 		{52C11DC8-39F2-40FF-B0B3-632453E783B4}.Debug|x64.ActiveCfg = Debug|x64
 		{52C11DC8-39F2-40FF-B0B3-632453E783B4}.Debug|x64.Build.0 = Debug|x64
 		{52C11DC8-39F2-40FF-B0B3-632453E783B4}.Debug|x64.Deploy.0 = Debug|x64
