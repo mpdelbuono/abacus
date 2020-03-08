@@ -19,6 +19,13 @@
         /// <typeparam name="TValue">The type of the value.</typeparam>
         /// <returns>The <see cref="IDictionaryProxy{TKey, TValue}"/> to use
         /// for the specified types.</returns>
+        /// <exception cref="System.Fabric.FabricNotPrimaryException">
+        /// This replica is not the primary replica, and this dictionary
+        /// has write capabilities.
+        /// </exception>
+        /// <exception cref="System.Fabric.FabricObjectClosedException">
+        /// This replica is not ready.
+        /// </exception>
         IDictionaryProxy<TKey, TValue> CreateDictionary<TKey, TValue>()
             where TKey : IComparable<TKey>, IEquatable<TKey>;
     }

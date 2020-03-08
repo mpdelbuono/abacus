@@ -1,6 +1,7 @@
 ﻿namespace Abacus.BackEnds.PlayerDatabase.Contracts
 {
     using Microsoft.ServiceFabric.Services.Remoting;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -35,7 +36,7 @@
         /// <exception cref="System.Runtime.Serialization.SerializationException">
         /// The data that is stored is incompatible with type <typeparamref name="T"/>.</exception>
         Task<T?> GetCharacterDataAsync<T>(int characterId, CancellationToken cancellationToken)
-            where T : class;
+            where T : class, ICloneable, IEquatable<T>;
 
         /// <summary>
         /// Gets the data associated with the player, including any secure data associated
@@ -65,6 +66,6 @@
         /// <exception cref="System.Runtime.Serialization.SerializationException">
         /// The data that is stored is incompatible with type <typeparamref name="T"/>.</exception>
         Task<T?> GetSecureCharacterDataAsync<T>(int characterId, string secureHash, CancellationToken cancellationToken)
-            where T : class;
+            where T : class, ICloneable, IEquatable<T>;
     }
 }

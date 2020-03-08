@@ -1,5 +1,7 @@
 ﻿namespace Abacus.BackEnds.PlayerDatabase.Contracts
 {
+    using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.ServiceFabric.Services.Remoting;
 
@@ -16,6 +18,9 @@
         /// </summary>
         /// <param name="characterId">The ESI character ID of the character for which the data is stored.</param>
         /// <param name="data">The data to store.</param>
+        /// <param name="previousData">The current state of the data, or <see langword="null"/> if
+        /// the data did not exist previously. This is used to block concurrent writes.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to abort the write.</param>
         /// <typeparam name="T">The type of data to store.</typeparam>
         /// <returns>A <see cref="Task"/> upon which the operation can be awaited.</returns>
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">
@@ -25,8 +30,13 @@
         /// <exception cref="System.TimeoutException">
         /// Writing to the database timed out. The most common causes for this are that the primary is
         /// unhealthy or the partition is in quorum loss.</exception>
-        Task WritePlayerDataAsync<T>(int characterId, T data)
-            where T : class;
+        /// <exception cref="System.Data.DBConcurrencyException"><paramref name="previousData"/> did
+        /// not match the current state of the data prior to write.</exception>
+        /// <exception cref="System.Fabric.FabricNotPrimaryException">
+        /// The replica is not the primary and this operation should be attempted on the primary.
+        /// </exception>
+        Task WritePlayerDataAsync<T>(int characterId, T data, T? previousData, CancellationToken cancellationToken)
+            where T : class, ICloneable, IEquatable<T>;
 
         /// <summary>
         /// Writes data for the character into the database, replacing
@@ -38,6 +48,9 @@
         /// <param name="characterId">The ESI character ID of the character for which the data is stored.</param>
         /// <param name="secureHash">The secure hash of the ESI character ID and account.</param>
         /// <param name="data">The data to store.</param>
+        /// <param name="previousData">The current state of the data, or <see langword="null"/> if
+        /// the data did not exist previously. This is used to block concurrent writes.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to abort the write.</param>
         /// <typeparam name="T">The type of data to store.</typeparam>
         /// <returns>A <see cref="Task"/> upon which the operation can be awaited.</returns>
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">
@@ -47,7 +60,12 @@
         /// <exception cref="System.TimeoutException">
         /// Writing to the database timed out. The most common causes for this are that the primary is
         /// unhealthy or the partition is in quorum loss.</exception>
-        Task WriteSecurePlayerDataAsync<T>(int characterId, string secureHash, T data)
-            where T : class;
+        /// <exception cref="System.Data.DBConcurrencyException"><paramref name="previousData"/> did
+        /// not match the current state of the data prior to write.</exception>
+        /// <exception cref="System.Fabric.FabricNotPrimaryException">
+        /// The replica is not the primary and this operation should be attempted on the primary.
+        /// </exception>
+        Task WriteSecurePlayerDataAsync<T>(int characterId, string secureHash, T data, T? previousData, CancellationToken cancellationToken)
+            where T : class, ICloneable, IEquatable<T>;
     }
 }

@@ -10,7 +10,7 @@
     /// Implementation of <see cref="IDictionaryFactory"/> which provides a Service Fabric-based
     /// dictionary proxy.
     /// </summary>
-    internal class ServiceFabricReadOnlyDictionaryProxyFactory : IDictionaryFactory
+    internal class ServiceFabricWriteDictionaryProxyFactory : IDictionaryFactory
     {
         /// <summary>
         /// The set of <see cref="IDictionaryProxy{TKey, TValue}"/> objects that have already
@@ -41,7 +41,7 @@
         /// <param name="stateManager">The Service Fabric state manager.</param>
         /// <param name="partition">The partition in which to find the data.</param>
         /// <param name="dictionaryName">The dictionary containing the data.</param>
-        internal ServiceFabricReadOnlyDictionaryProxyFactory(
+        internal ServiceFabricWriteDictionaryProxyFactory(
             IReliableStateManager stateManager,
             IStatefulServicePartition partition,
             string dictionaryName)
@@ -61,6 +61,16 @@
         public IDictionaryProxy<TKey, TValue> CreateDictionary<TKey, TValue>()
             where TKey : IComparable<TKey>, IEquatable<TKey>
         {
+            // Verify we are the primary
+            if (this.partition.WriteStatus == PartitionAccessStatus.NotPrimary)
+            {
+                throw new FabricNotPrimaryException();
+            }
+            else if (this.partition.WriteStatus != PartitionAccessStatus.Granted)
+            {
+                throw new FabricObjectClosedException();
+            }
+
             // Construct the proxy if necessary
             object proxy = this.constructedProxies.GetOrAdd(
                 (typeof(TKey), typeof(TValue)),

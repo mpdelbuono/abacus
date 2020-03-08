@@ -61,6 +61,24 @@ namespace Abacus.BackEnds.PlayerDatabase.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A concurrent write to the same character occurred..
+        /// </summary>
+        internal static string ConcurrentWrite {
+            get {
+                return ResourceManager.GetString("ConcurrentWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The old state did not match the current state. A concurrent write may have occurred..
+        /// </summary>
+        internal static string DataTransactionMismatch {
+            get {
+                return ResourceManager.GetString("DataTransactionMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dictionary name must be specified..
         /// </summary>
         internal static string DictionaryNameBlank {

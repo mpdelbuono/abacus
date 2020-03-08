@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConcurrentWrite" xml:space="preserve">
+    <value>A concurrent write to the same character occurred.</value>
+  </data>
+  <data name="DataTransactionMismatch" xml:space="preserve">
+    <value>The old state did not match the current state. A concurrent write may have occurred.</value>
+  </data>
   <data name="DictionaryNameBlank" xml:space="preserve">
     <value>Dictionary name must be specified.</value>
   </data>

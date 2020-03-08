@@ -37,7 +37,8 @@
         }
 
         /// <inheritdoc/>
-        public async Task<T?> GetCharacterDataAsync<T>(int characterId, CancellationToken cancellationToken) where T : class
+        public async Task<T?> GetCharacterDataAsync<T>(int characterId, CancellationToken cancellationToken)
+            where T : class, ICloneable, IEquatable<T>
         {
             // Get the data
             PlayerDataContainer<T>? result = await this.LookUpCharacterDataAsync<T>(characterId, cancellationToken).ConfigureAwait(false);
@@ -45,7 +46,8 @@
         }
 
         /// <inheritdoc/>
-        public async Task<T?> GetSecureCharacterDataAsync<T>(int characterId, string secureHash, CancellationToken cancellationToken) where T : class
+        public async Task<T?> GetSecureCharacterDataAsync<T>(int characterId, string secureHash, CancellationToken cancellationToken)
+            where T : class, ICloneable, IEquatable<T>
         {
             // Look up the data
             PlayerDataContainer<T>? result = await this.LookUpCharacterDataAsync<T>(characterId, cancellationToken).ConfigureAwait(false);
@@ -94,7 +96,7 @@
         /// The replica is closed and this operation should not be attempted.
         /// </exception>
         private async Task<PlayerDataContainer<T>?> LookUpCharacterDataAsync<T>(int characterId, CancellationToken cancellationToken)
-            where T : class
+            where T : class, ICloneable, IEquatable<T>
         {
             // Open the dictionary
             IDictionaryProxy<int, PlayerDataContainer<T>> dictionaryProxy =

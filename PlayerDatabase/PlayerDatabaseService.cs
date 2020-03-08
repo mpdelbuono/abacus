@@ -53,7 +53,17 @@ namespace Abacus.BackEnds.PlayerDatabase
                                 this.Partition,
                                 ReliableCollectionName))),
                     listenOnSecondary: true
-                )
+                ),
+
+                // Create the writer listener which only listens on primary
+                new ServiceReplicaListener(
+                    (c) => new FabricTransportServiceRemotingListener(
+                        c,
+                        new DatabaseWriteController(
+                            new ServiceFabricWriteDictionaryProxyFactory(
+                                this.StateManager,
+                                this.Partition,
+                                ReliableCollectionName))))
             };
 
         /// <summary>
@@ -63,8 +73,6 @@ namespace Abacus.BackEnds.PlayerDatabase
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service replica.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
-            // Open the dictionary for use
-
             // Run while the service is primary. However, because there is no background work to do, we just emit a heartbeat.
             while (cancellationToken.IsCancellationRequested == false)
             {
