@@ -47,7 +47,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceFabricUtilities\ServiceFabricUtilities.csproj" />
-    <ProjectReference Include="Contracts\Contracts.csproj" />
+    <ProjectReference Include="Contracts\PlayerDatabase.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

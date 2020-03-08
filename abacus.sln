@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FleetPresenceApi", "FleetPr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceFabricUtilities", "ServiceFabricUtilities\ServiceFabricUtilities.csproj", "{310FA8B8-59A3-4560-9CDE-8AFE962E4FCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "PlayerDatabase\Contracts\Contracts.csproj", "{19F80CF3-6AA5-4439-B498-576342A674E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayerDatabase.Contracts", "PlayerDatabase\Contracts\PlayerDatabase.Contracts.csproj", "{19F80CF3-6AA5-4439-B498-576342A674E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
