@@ -1,6 +1,7 @@
 ﻿namespace Abacus.BackEnds.PlayerDatabase.Contracts
 {
     using Microsoft.ServiceFabric.Services.Remoting;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -14,6 +15,7 @@
         /// the data written by <see cref="IPlayerDatabaseWriterService.WritePlayerDataAsync{T}(int, T)"/>.
         /// </summary>
         /// <param name="characterId">The EVE ID of the character.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> with which to abort the read.</param>
         /// <returns>The data stored on the character, or <see langword="null"/> if no
         /// data is stored.</returns>
         /// <remarks>
@@ -21,14 +23,18 @@
         /// reference to which account owns the character. To access the secure
         /// (account-bound) information, use <see cref="GetSecureCharacterDataAsync(int, string)"/>.
         /// </remarks>
-        /// <exception cref="System.Fabric.FabricNotReadableException">The database
-        /// is having trouble reading the data stored against the player.</exception>
-        /// <exception cref="System.TimeoutException">A timeout occurred while trying
-        /// to read the database. This is most frequently caused by either lock
-        /// contention or database quorum loss.</exception>
+        /// <exception cref="System.Fabric.FabricNotReadableException">
+        /// The replica could not be read, typically because of quorum loss.
+        /// </exception>
+        /// <exception cref="System.TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        /// <exception cref="System.Fabric.FabricObjectClosedException">
+        /// The replica is closed and this operation should not be attempted.
+        /// </exception>
         /// <exception cref="System.Runtime.Serialization.SerializationException">
         /// The data that is stored is incompatible with type <typeparamref name="T"/>.</exception>
-        Task<T?> GetPlayerDataAsync<T>(int characterId)
+        Task<T?> GetCharacterDataAsync<T>(int characterId, CancellationToken cancellationToken)
             where T : class;
 
         /// <summary>
@@ -39,6 +45,7 @@
         /// </summary>
         /// <param name="characterId">The EVE ID of the character.</param>
         /// <param name="secureHash">The ESI secure hash of the player.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> with which to abort the read.</param>
         /// <returns>The data stored on the character, or <see langword="null"/> if no
         /// data is stored.</returns>
         /// <remarks>This data is a superset of that data that would be returned
@@ -46,14 +53,18 @@
         /// is guaranteed unique for the combination of a character and the player's
         /// login account. This means if the character is transferred to another account,
         /// the hash will change.</remarks>
-        /// <exception cref="System.Fabric.FabricNotReadableException">The database
-        /// is having trouble reading the data stored against the player.</exception>
-        /// <exception cref="System.TimeoutException">A timeout occurred while trying
-        /// to read the database. This is most frequently caused by either lock
-        /// contention or database quorum loss.</exception>
+        /// <exception cref="System.Fabric.FabricNotReadableException">
+        /// The replica could not be read, typically because of quorum loss.
+        /// </exception>
+        /// <exception cref="System.TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        /// <exception cref="System.Fabric.FabricObjectClosedException">
+        /// The replica is closed and this operation should not be attempted.
+        /// </exception>
         /// <exception cref="System.Runtime.Serialization.SerializationException">
         /// The data that is stored is incompatible with type <typeparamref name="T"/>.</exception>
-        Task<T?> GetSecureCharacterDataAsync<T>(int characterId, string secureHash)
+        Task<T?> GetSecureCharacterDataAsync<T>(int characterId, string secureHash, CancellationToken cancellationToken)
             where T : class;
     }
 }

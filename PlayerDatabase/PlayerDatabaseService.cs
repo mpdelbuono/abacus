@@ -15,7 +15,7 @@ namespace Abacus.BackEnds.PlayerDatabase
     /// <summary>
     /// Entry point for the service. Service Fabric spins up an instance of this class when the service becomes active.
     /// </summary>
-    internal sealed class PlayerDatabaseService : StatefulService, IPlayerDatabaseReaderService, IPlayerDatabaseWriterService
+    internal sealed class PlayerDatabaseService : StatefulService
     {
         /// <summary>
         /// The name of the reliable collection storing the database.
@@ -43,8 +43,15 @@ namespace Abacus.BackEnds.PlayerDatabase
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
             new[]
             {
+                // Create the read-only listener which listens on primary and secondary
                 new ServiceReplicaListener(
-                    (c) => new FabricTransportServiceRemotingListener(c, new ReadOnlyController(this.Context, this.Partition, this.StateManager)),
+                    (c) => new FabricTransportServiceRemotingListener(
+                        c, 
+                        new ReadOnlyController(
+                            new ServiceFabricReadOnlyDictionaryProxyFactory(
+                                this.StateManager,
+                                this.Partition,
+                                ReliableCollectionName))),
                     listenOnSecondary: true
                 )
             };

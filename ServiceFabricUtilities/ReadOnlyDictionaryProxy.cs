@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Fabric;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Abacus.ServiceFabricUtilities
@@ -59,7 +60,7 @@ namespace Abacus.ServiceFabricUtilities
         /// <returns>The reliable state dictionary.</returns>
         /// <remarks>This task may take some time to complete. In addition to needing to possibly needing to communicate with
         /// replicas, the call may also need to perform retries in the event that the service is not in a healthy state.</remarks>
-        public async Task<IReliableDictionary<TKey, TValue>> OpenDictionaryAsync()
+        public async Task<IReliableDictionary2<TKey, TValue>> OpenDictionaryAsync(CancellationToken cancellationToken)
         {
             // Use the cached dictionary if possible
             if (this.cachedDictionary != null)
@@ -72,26 +73,31 @@ namespace Abacus.ServiceFabricUtilities
             do
             {
                 // Try to open the dictionary
+                cancellationToken.ThrowIfCancellationRequested();
                 var dictionary = await this.stateManager.TryGetAsync<IReliableDictionary2<TKey, TValue>>(this.dictionaryName).ConfigureAwait(false);
                 if (dictionary.HasValue)
                 {
                     this.cachedDictionary = dictionary.Value;
                     return this.cachedDictionary;
                 }
-            } while (await WaitNext(retryDuration).ConfigureAwait(false));
+            } while (await WaitNext(retryDuration, cancellationToken).ConfigureAwait(false));
 
             // Failed to open the dictionary
             throw new FabricNotReadableException($"Failed to open dictionary {this.dictionaryName}");
         }
+
+        /// <inheritdoc/>
+        public ITransaction CreateTransaction() => this.stateManager.CreateTransaction();
 
         /// <summary>
         /// Reads the next wait time from the enumerator and waits for that duration.
         /// If the enumerator has no more entries, no wait occurs.
         /// </summary>
         /// <param name="enumerator">The enumerator to enumerate over.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> with which to abort the wait.</param>
         /// <returns><see langword="false"/> if there are no more elements in
         /// <paramref name="enumerator"/>, or <see langword="true"/> otherwise.</returns>
-        private static async Task<bool> WaitNext(IEnumerator<TimeSpan> enumerator)
+        private static async Task<bool> WaitNext(IEnumerator<TimeSpan> enumerator, CancellationToken cancellationToken)
         {
             // Check if there are more entries
             bool result = enumerator.MoveNext();
@@ -99,7 +105,7 @@ namespace Abacus.ServiceFabricUtilities
             // If there are more entries, delay
             if (result)
             {
-                await Task.Delay(enumerator.Current).ConfigureAwait(false);
+                await Task.Delay(enumerator.Current, cancellationToken).ConfigureAwait(false);
             }
 
             // Return whether or not to break out.
