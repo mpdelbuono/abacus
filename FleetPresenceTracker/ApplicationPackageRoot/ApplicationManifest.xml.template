@@ -12,18 +12,18 @@
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="FleetPresenceApiPkg" ServiceManifestVersion="1.0.0" />
+    <ServiceManifestRef ServiceManifestName="FleetPresenceApiPkg" ServiceManifestVersion="{VERSION}" />
     <ConfigOverrides />
     <EnvironmentOverrides CodePackageRef="code">
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[FleetPresenceApi_ASPNETCORE_ENVIRONMENT]" />
     </EnvironmentOverrides>
   </ServiceManifestImport>
   <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="FleetPresenceMonitorPkg" ServiceManifestVersion="1.0.0" />
+    <ServiceManifestRef ServiceManifestName="FleetPresenceMonitorPkg" ServiceManifestVersion="{VERSION}" />
     <ConfigOverrides />
   </ServiceManifestImport>
   <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="PlayerDatabasePkg" ServiceManifestVersion="1.0.0" />
+    <ServiceManifestRef ServiceManifestName="PlayerDatabasePkg" ServiceManifestVersion="{VERSION}" />
     <ConfigOverrides />
   </ServiceManifestImport>
   <DefaultServices>

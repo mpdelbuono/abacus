@@ -18,8 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <!-- Generate ApplicationManifest.xml -->
+  <Target Name="Generate" Condition="Exists('$(ApplicationProjectTargetsPath)')" BeforeTargets="ResolveProjectReferences">
+    <PropertyGroup>
+      <!-- Command line for Windows systems -->
+      <ShellExecutable Condition="'$(OS)' == 'Windows_NT'">$(WINDIR)\System32\WindowsPowerShell\v1.0\powershell.exe</ShellExecutable>
+      <ShellParams Condition="'$(OS)' == 'Windows_NT'">-NonInteractive -ExecutionPolicy Unrestricted -File "$(SolutionDir)FleetPresenceTracker\Scripts\Update-ApplicationVersionNumber.ps1"</ShellParams>
+      <!-- Command line for Unix-based systems -->
+      <ShellExecutable Condition="'$(OS)' == 'Unix'">$(SolutionDir)FleetPresenceTracker\Scripts\UpdateApplicationVersionNumber.sh</ShellExecutable>
+      <ShellParams Condition="'$(OS)' == 'Unix'" />
+    </PropertyGroup>
+    <Exec Command="&quot;$(ShellExecutable)&quot; $(ShellParams)" ConsoleToMsBuild="true" WorkingDirectory="$(SolutionDir)FleetPresenceTracker\Scripts" LogStandardErrorAsError="true" />
+  </Target>
   <ItemGroup>
-    <None Include="ApplicationPackageRoot\ApplicationManifest.xml" />
     <None Include="ApplicationParameters\Cloud.xml" />
     <None Include="ApplicationParameters\Local.1Node.xml" />
     <None Include="ApplicationParameters\Local.5Node.xml" />
@@ -27,8 +38,20 @@
     <None Include="PublishProfiles\Local.1Node.xml" />
     <None Include="PublishProfiles\Local.5Node.xml" />
     <None Include="Scripts\Deploy-FabricApplication.ps1" />
+    <None Include="Scripts\Update-ApplicationVersionNumber.ps1" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\UpdateApplicationVersionNumber.sh" />
+    <None Include="ApplicationPackageRoot\ApplicationManifest.xml.template">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ApplicationManifest.xml</LastGenOutput>
+    </None>
+    <None Include="ApplicationPackageRoot\ApplicationManifest.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ApplicationManifest.xml.template</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
