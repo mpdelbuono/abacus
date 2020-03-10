@@ -1,6 +1,38 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".xml" encoding="us-ascii" #>
+<#
+    // Execute tag lookup
+    System.Diagnostics.Process versionRetriever = new System.Diagnostics.Process();
+    versionRetriever.StartInfo = new System.Diagnostics.ProcessStartInfo()
+    {
+		WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        WorkingDirectory = this.Host.ResolvePath("."),
+		FileName = "git",
+        UseShellExecute = false,
+		Arguments = "describe --tags",
+        RedirectStandardOutput = true,
+        RedirectStandardError = true
+    };
+
+    // Wait for result
+    versionRetriever.Start();
+    versionRetriever.WaitForExit();
+
+    // Throw error if necessary
+    if (versionRetriever.ExitCode != 0)
+    {
+        throw new Exception(versionRetriever.StandardError.ReadToEnd());
+    }
+
+    string version = versionRetriever.StandardOutput.ReadToEnd().Trim();
+#>
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceManifest Name="FleetPresenceMonitorPkg"
-                 Version="1.0.0"
+                 Version="<#= version #>"
                  xmlns="http://schemas.microsoft.com/2011/01/fabric"
                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -11,7 +43,7 @@
   </ServiceTypes>
 
   <!-- Code package is your service executable. -->
-  <CodePackage Name="Code" Version="1.0.0">
+  <CodePackage Name="Code" Version="<#= version #>">
     <EntryPoint>
       <ExeHost>
         <Program>Abacus.FrontEnds.FleetPresenceMonitor.exe</Program>
@@ -21,7 +53,7 @@
 
   <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 
        independently-updateable and versioned set of custom configuration settings for your service. -->
-  <ConfigPackage Name="Config" Version="1.0.0" />
+  <ConfigPackage Name="Config" Version="<#= version #>" />
 
   <Resources>
     <Endpoints>
